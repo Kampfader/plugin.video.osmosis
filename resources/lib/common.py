@@ -69,7 +69,7 @@ class Globals(Singleton):
             cdate = search('Git:(\d+)', bv)
         cdate = date.fromtimestamp(mktime(strptime(cdate.group(1), '%Y%m%d'))) if cdate else None
         self._globals['KODI_COMPILE_DATE'] = cdate
-        self._globals['FEATURE_PLUGIN_RESUME_SYNC'] = self.KODI_VERSION >= 18 and self.KODI_COMPILE_DATE and self.KODI_COMPILE_DATE >= date(2020, 1, 28)
+        self._globals['FEATURE_PLUGIN_RESUME_SYNC'] = self.KODI_VERSION >= 19 and self.KODI_COMPILE_DATE and self.KODI_COMPILE_DATE >= date(2020, 1, 28)
 
         try:
             import StorageServer
