@@ -1,22 +1,7 @@
-# Copyright (C) 2016 stereodruid(J.G.)
-#
-#
-# This file is part of OSMOSIS
-#
-# OSMOSIS is free software: you can redistribute it.
-# You can modify it for private use only.
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# OSMOSIS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
 # -*- coding: utf-8 -*-
-
 from __future__ import unicode_literals
 from kodi_six.utils import py2_encode, py2_decode
+
 import json
 import os
 import re
@@ -84,7 +69,7 @@ def fillPluginItems(url, media_type='video', file_type=False, strm=False, strm_n
         if globals.monitor.abortRequested():
             exit()
     else:
-        details = [dict(playableSingleMedia=True, url=plugin_url)]
+        details = [dict(playableSingleMedia=True, url=plugin_url, name=name_orig)]
 
     if re.search('Movies|YouTube|TV-Shows|Album', strm_type):
         pDialogToClose = not pDialog
@@ -508,8 +493,8 @@ def addMovies(contentList, strm_name, strm_type, name_orig, pDialog, provider='n
             if settings.LINK_TYPE == 0 and name_orig and file.find('name_orig=') == -1:
                 url = 'name_orig={0};{1}'.format(name_orig , url)
             m_path = getMovieStrmPath(strm_type, strm_name)
-            m_title = getStrmname(strm_name)
-            movieList.append({'path': m_path, 'title':  cleanStrmFilesys(m_title), 'url': url, 'provider': provider})
+            m_title = cleanLabels(contentList[0].get('name'), keep_year=settings.KEEP_MOVIE_YEAR)
+            movieList.append({'path': m_path, 'title':  m_title, 'url': url, 'provider': provider})
             pagesDone = settings.PAGING_MOVIES
 
     if globals.monitor.abortRequested():
