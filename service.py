@@ -1,20 +1,4 @@
-# Copyright (C) 2016 stereodruid(J.G.) Mail: stereodruid@gmail.com
-#
-#
-# This file is part of OSMOSIS
-#
-# OSMOSIS is free software: you can redistribute it.
-# You can modify it for private use only.
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# OSMOSIS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
 # -*- coding: utf-8 -*-
-
 from __future__ import unicode_literals
 from kodi_six.utils import py2_decode
 
@@ -24,6 +8,7 @@ from json import dumps, loads
 import os
 from re import search
 from time import ctime, mktime, strftime, strptime, time
+
 import xbmc
 import xbmcvfs
 
