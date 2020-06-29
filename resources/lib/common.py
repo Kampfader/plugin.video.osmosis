@@ -3,13 +3,17 @@
     Provides: Globals, Settings, sleep, jsonRPC
 '''
 from __future__ import unicode_literals
+
+import _strptime
+
 from datetime import date
+from json import dumps, loads
 from kodi_six.utils import py2_decode, py2_encode
 from os.path import join as OSPJoin
 from re import search
 from sys import argv
 from time import mktime, strptime
-from json import dumps, loads
+
 import xbmc
 import xbmcaddon
 import xbmcgui

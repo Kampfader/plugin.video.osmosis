@@ -17,6 +17,9 @@
 
 from __future__ import unicode_literals
 from kodi_six.utils import py2_decode
+
+import _strptime
+
 from json import dumps, loads
 import os
 from re import search
