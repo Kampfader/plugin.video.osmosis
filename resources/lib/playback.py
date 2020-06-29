@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-
 from __future__ import unicode_literals
 from kodi_six.utils import PY2, py2_encode, py2_decode
+
 from json import loads
 import os
 import re
