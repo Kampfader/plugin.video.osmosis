@@ -66,7 +66,7 @@ def play(argv, params):
                         item.setArt({'thumb': match.group(1)})
             else:
                 sTitle = argv[0][argv[0].index('|') + 1:]
-                props = getKodiMovieID(selectedEntry[2])
+                props = getKodiMovieID('{0}{1}'.format(selectedEntry[2], sTitle))
                 infoLabels['title'] = sTitle
                 infoLabels['mediatype'] = 'movie'
                 if props:
