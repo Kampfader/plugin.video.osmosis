@@ -166,6 +166,11 @@ class Player(xbmc.Player):
         next_episode_filepath = self.filepath.replace('s{0}e{1}'.format(self.next_episode.get('season'), self.next_episode.get('episode') - 1),
                                                       's{0}e{1}'.format(self.next_episode.get('season'), self.next_episode.get('episode')))
         k_next_episode = getKodiEpisodeID(next_episode_filepath, self.next_episode.get('season'), self.next_episode.get('episode'))
+        if not k_next_episode:
+            next_episode_filepath = self.filepath.replace('s{0}e{1}'.format(self.next_episode.get('season'), self.next_episode.get('episode') - 1),
+                                                          's{0}e{1}'.format(self.next_episode.get('season') + 1, 1))
+            self.next_episode.update(dict(season=self.next_episode.get('season') + 1, episode=1))
+            k_next_episode = getKodiEpisodeID(next_episode_filepath, self.next_episode.get('season'), self.next_episode.get('episode'))
         if k_next_episode:
             next_episode_details = jsonrpc('VideoLibrary.GetEpisodeDetails', {'episodeid': k_next_episode.get('id'), 'properties': ['runtime']}).get('episodedetails', {})
             if next_episode_details.get('runtime') == 0:
