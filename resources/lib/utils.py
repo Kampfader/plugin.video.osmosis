@@ -100,7 +100,7 @@ def addon_log(string):
 
 def addon_log_notice(string):
     message = '[{0}-{1}] {2}'.format(globals.PLUGIN_ID, globals.PLUGIN_VERSION, string)
-    xbmc.log(py2_encode(message), xbmc.LOGNOTICE)
+    xbmc.log(py2_encode(message), xbmc.LOGINFO)
 
 
 def zeitspanne(sekunden):
