@@ -276,6 +276,7 @@ def readMediaList():
 def removeStreamsFromDatabaseAndFilesystem(delList):
     for item in delList:
         try:
+            addon_log('remove item: {0}'.format(item))
             splits = item.get('entry').split('|')
             type = splits[0]
             isAudio = True if type.lower().find('audio') > -1 else False
@@ -300,17 +301,30 @@ def removeStreamsFromDatabaseAndFilesystem(delList):
                 streams = None
                 if type.lower().find('tv-shows') > -1 or type.lower().find('movies') > -1:
                     deleteFromFileSystem = False
-                    streams = [stream[0] for stream in delStream(path[len(settings.STRM_LOC) + 1:len(path)], getProviderId(item.get('url')).get('providerId'), type.lower().find('tv-shows') > -1)]
+                    delPath = path[len(settings.STRM_LOC):len(path)] if settings.STRM_LOC.endswith(('\\', '/')) else path[len(settings.STRM_LOC) + 1:len(path)]
+                    delData = dict(path=delPath, provider=getProviderId(item.get('url')).get('providerId'), isShow=type.lower().find('tv-shows') > -1)
+                    if item.get('name_orig', '') != '':
+                        season_matches = re.findall('([sS]taffel|[sS]eason])\s?(\d+)', item.get('name_orig'))
+                        if season_matches and len(season_matches) == 1:
+                            delData.update(dict(season=season_matches[0][1]))
+                    streams = [stream[0] for stream in delStream(delData)]
                     if len(streams) > 0:
                         dirs, files = xbmcvfs.listdir(path)
                         for file in files:
-                            if py2_decode(file).replace('.strm', '') in streams:
+                            fsearch = re.search('[sS]\d+[eE]\d+', py2_decode(file))
+                            if fsearch and fsearch.group(0) in streams:
                                 filePath = os.path.join(py2_encode(path), file)
                                 addon_log_notice('removeStreamsFromDatabaseAndFilesystem: delete file = \'{0}\''.format(py2_decode(filePath)))
                                 xbmcvfs.delete(xbmc.translatePath(filePath))
                     dirs, files = xbmcvfs.listdir(path)
                     if not files and not dirs:
                         deleteFromFileSystem = True
+                    else:
+                        strm_files = searchStreamsRecursive(path, dirs, files, list())
+                        if not strm_files:
+                            deleteFromFileSystem = True
+
+                    if deleteFromFileSystem:
                         addon_log_notice('removeStreamsFromDatabaseAndFilesystem: delete empty directory = {0}'.format(path))
 
             if deleteFromFileSystem:
@@ -320,3 +334,14 @@ def removeStreamsFromDatabaseAndFilesystem(delList):
                 jsonrpc('AudioLibrary.Clean')
         except OSError:
                 print ('Unable to remove: {0}'.format(path))
+
+
+def searchStreamsRecursive(path, dirs, files, strm_files):
+    strm_files.extend([file for file in files if file.endswith('.strm')])
+    for dir in dirs:
+        newpath = py2_decode(os.path.join(path, dir))
+        dirs, files = xbmcvfs.listdir(newpath)
+        if files or dirs:
+            strm_files = searchStreamsRecursive(newpath, dirs, files, strm_files)
+
+    return strm_files
