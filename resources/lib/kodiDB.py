@@ -644,21 +644,31 @@ def getVideo(ID, seasonEpisode=None):
     return provList
 
 
-def delStream(path, provider, isShow):
+def delStream(data):
     streams = []
 
-    addon_log('delStream: path = {0}, provider = {1}, isShow = {2}'.format(py2_decode(path), py2_decode(provider), isShow))
+    path = data.get('path')
+    provider = data.get('provider')
+    isShow = data.get('isShow')
+    season = data.get('season')
+
+    addon_log('delStream: path = {0}, provider = {1}, isShow = {2}, season = {3}'.format(py2_decode(path), py2_decode(provider), isShow, season))
     try:
         args = {'sqliteDB': settings.DATABASE_SQLLITE_OSMOSIS_MOVIE_FILENAME_AND_PATH, 'mysqlDBType': 'Movies'} if not isShow \
                 else {'sqliteDB': settings.DATABASE_SQLLITE_OSMOSIS_TVSHOW_FILENAME_AND_PATH, 'mysqlDBType': 'TVShows'}
         con, cursor = openDB(**args)
 
         path = invCommas(path)
+        args = [path, provider]
         if isShow == False:
             query = 'SELECT movies.title FROM movies WHERE movies.id IN (SELECT stream_ref.mov_id FROM stream_ref WHERE stream_ref.mov_id IN (SELECT movies.id FROM movies WHERE movies.filePath like \'{0}\') and stream_ref.provider like \'{1}\');'
         else:
-            query = 'SELECT stream_ref.seasonEpisode FROM stream_ref WHERE stream_ref.show_id IN (SELECT shows.id FROM shows WHERE shows.filePath like \'{0}\') and stream_ref.provider like \'{1}\';'
-        args = [path, provider]
+            if season:
+                args.append(season)
+                query = 'SELECT stream_ref.seasonEpisode FROM stream_ref WHERE stream_ref.show_id IN (SELECT shows.id FROM shows WHERE shows.filePath like \'{0}\') and stream_ref.provider like \'{1}\' and stream_ref.seasonEpisode like \'s{2}e%\';'
+            else:
+                query = 'SELECT stream_ref.seasonEpisode FROM stream_ref WHERE stream_ref.show_id IN (SELECT shows.id FROM shows WHERE shows.filePath like \'{0}\') and stream_ref.provider like \'{1}\';'
+
         addon_log('delStream: query = {0}'.format(query.format(*args)))
         cursor.execute(query.format(*args))
         streams_delete = cursor.fetchall()
@@ -666,7 +676,10 @@ def delStream(path, provider, isShow):
         if isShow == False:
             query = 'DELETE FROM stream_ref WHERE stream_ref.mov_id IN (SELECT movies.id FROM movies WHERE movies.filePath like \'{0}\') and stream_ref.provider like \'{1}\';'
         else:
-            query = 'DELETE FROM stream_ref WHERE stream_ref.show_id IN (SELECT shows.id FROM shows WHERE shows.filePath like \'{0}\') and stream_ref.provider like \'{1}\';'
+            if season:
+                query = 'DELETE FROM stream_ref WHERE stream_ref.show_id IN (SELECT shows.id FROM shows WHERE shows.filePath like \'{0}\') and stream_ref.provider like \'{1}\' and stream_ref.seasonEpisode like \'s{2}e%\';'
+            else:
+                query = 'DELETE FROM stream_ref WHERE stream_ref.show_id IN (SELECT shows.id FROM shows WHERE shows.filePath like \'{0}\') and stream_ref.provider like \'{1}\';'
         addon_log('delStream: query = {0}'.format(query.format(*args)))
         cursor.execute(query.format(*args))
         con.commit()
