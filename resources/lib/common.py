@@ -161,8 +161,12 @@ class Settings(Singleton):
         elif 'SCHEDULED_UPDATE' == name: return int(self._gs('scheduled_update'))
         elif 'SCHEDULED_UPDATE_INTERVAL' == name: return int(self._gs('scheduled_update_interval'))
         elif 'SCHEDULED_UPDATE_INTERVAL_FILENNAME_AND_PATH' == name: return py2_decode(OSPJoin(self.MEDIALIST_PATH, 'scheduled_update_interval.txt'))
-        elif 'SCHEDULED_UPDATE_TIME' == name: return strptime(self._gs('scheduled_update_time'), '%H:%M')
+        elif 'SCHEDULED_UPDATE_TIME' == name: return self._gs('scheduled_update_time')
         elif 'SEARCH_THETVDB' == name: return int(self._gs('search_thetvdb'))
+        elif 'SHOW_UPDATE_PROGRESS' == name: return self._gs('show_update_progress') == 'true'
+        elif 'SHOW_UPDATE_PROGRESS_MANUALLY' == name: return self._gs('show_update_progress_manually') == 'true'
+        elif 'SHOW_UPDATE_PROGRESS_SCHEDULED' == name: return self._gs('show_update_progress_scheduled') == 'true'
+        elif 'SHOW_UPDATE_PROGRESS_STARTUP' == name: return self._gs('show_update_progress_startup') == 'true'
         elif 'STRM_LOC' == name: return py2_decode(xbmc.translatePath(self._gs('STRM_LOC')))
         elif 'TVDB_DIALOG_AUTOCLOSE_TIME' == name: return int(self._gs('tvdb_dialog_autoclose_time'))
         elif 'TVDB_TOKEN_FILENNAME_AND_PATH' == name: return py2_decode(OSPJoin(self.MEDIALIST_PATH, 'tvdb_token.txt'))

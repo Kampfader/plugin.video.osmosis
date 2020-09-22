@@ -72,11 +72,6 @@ def fillPluginItems(url, media_type='video', file_type=False, strm=False, strm_n
         details = [dict(playableSingleMedia=True, url=plugin_url, name=name_orig)]
 
     if re.search('Movies|YouTube|TV-Shows|Album', strm_type):
-        pDialogToClose = not pDialog
-        if not pDialog:
-            pDialog = globals.dialogProgressBG
-            pDialog.create(heading='\'{0}\' {1}'.format(strm_name, getString(39138, globals.addon)))
-
         if re.search('Movies|YouTube', strm_type):
             addMovies(details, strm_name, strm_type, name_orig, pDialog)
         elif re.search('TV-Shows', strm_type):
@@ -84,7 +79,7 @@ def fillPluginItems(url, media_type='video', file_type=False, strm=False, strm_n
         elif re.search('Album', strm_type):
             addAlbum(details, strm_name, strm_type, pDialog)
 
-        if pDialogToClose:
+        if pDialog:
             pDialog.close()
 
         return
@@ -130,7 +125,6 @@ def fillPluginItems(url, media_type='video', file_type=False, strm=False, strm_n
 
 
 def addToMedialist(params):
-    settings = Settings()
     name = name_orig = params.get('name')
     # A dialog to rename the Change Title for Folder and MediaList entry:
     if params.get('noninteractive', False) == False:
@@ -216,7 +210,9 @@ def addToMedialist(params):
                 except:
                     pass
 
-                fillPluginItems(url, strm=True, strm_name=name, strm_type=cType, name_orig=name_orig)
+                pDialog = globals.dialogProgressBG
+                pDialog.create(heading='\'{0}\' {1}'.format(name, getString(39138, globals.addon)))
+                fillPluginItems(url, strm=True, strm_name=name, strm_type=cType, name_orig=name_orig, pDialog=pDialog)
                 # globals.dialog.notification(getString(39126, globals.addon), getString(39127, globals.addon), globals.MEDIA_ICON, 5000, True)
 
 
@@ -615,7 +611,7 @@ def getTVShowFromList(showList, strm_name, strm_type, name_orig, pDialog, pagesD
                             episodesList.append(detailInfo)
 
             step = float(100.0 / len(episodesList) if len(episodesList) > 0 else 1)
-            if pagesDone > 0:
+            if pagesDone > 0 and pDialog:
                 pDialog.update(int(step), '\'{0} - Staffel {1}\' {2}'.format(showtitle, episodeseason, getString(39138, globals.addon)))
 
             split_episode = 0
@@ -642,7 +638,8 @@ def getTVShowFromList(showList, strm_name, strm_type, name_orig, pDialog, pagesD
 
             for index, episode in enumerate(episodesList):
                 pagesDone = getEpisode(episode, strm_name, strm_type, pagesDone=pagesDone, name_orig=name_orig)
-                pDialog.update(int(step * (index + 1)))
+                if pDialog:
+                    pDialog.update(int(step * (index + 1)))
 
             episodesList = []
 

@@ -120,6 +120,18 @@ msgctxt "#31306"
 msgid "Interval (hours)"
 msgstr ""
 
+msgctxt "#31307"
+msgid "Show update progress"
+msgstr ""
+
+msgctxt "#31308"
+msgid "When scheduled update"
+msgstr ""
+
+msgctxt "#31309"
+msgid "When updating manually"
+msgstr ""
+
 msgctxt "#31400"
 msgid "TheTVDB"
 msgstr ""
@@ -320,7 +332,7 @@ msgctxt "#33005"
 msgid "Addons that should be ignored by the playback dialog"
 msgstr ""
 
-msgctxt "#31006"
+msgctxt "#33006"
 msgid "Addons for which infolabels are to be added"
 msgstr ""
 

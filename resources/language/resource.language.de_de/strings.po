@@ -120,6 +120,18 @@ msgctxt "#31306"
 msgid "Interval (hours)"
 msgstr "Intervall (Stunden)"
 
+msgctxt "#31307"
+msgid "Show update progress"
+msgstr "Aktualisierungsfortschritt anzeigen"
+
+msgctxt "#31308"
+msgid "When scheduled update"
+msgstr "Bei zeitgesteuerter Aktualisierung"
+
+msgctxt "#31309"
+msgid "When updating manually"
+msgstr "Bei manueller Aktualisierung"
+
 msgctxt "#31400"
 msgid "TheTVDB"
 msgstr "TheTVDB"

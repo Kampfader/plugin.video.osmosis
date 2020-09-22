@@ -75,7 +75,7 @@ if __name__ == '__main__':
         fillPluginItems(params.get('url'))
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
     elif mode == 666:
-        strm_update(actor=params.get('updateActor', 0))
+        strm_update(actor=int(params.get('updateActor', 0)))
     elif mode == 4:
         selectedItems = mediaListDialog(header_prefix=getString(39123, globals.addon))
         if selectedItems and len(selectedItems) > 0:
