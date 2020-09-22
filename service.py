@@ -100,7 +100,7 @@ if __name__ == '__main__':
             if (next <= now):
                 next, next_json = writeScheduledUpdate(now)
                 xbmc.executebuiltin('RunPlugin(plugin://{0}/?mode=666&updateActor=1)'.format(globals.PLUGIN_ID))
-        if settings.SCHEDULED_UPDATE == 2 and strftime('%H:%M') == strftime('%H:%M', settings.SCHEDULED_UPDATE_TIME):
+        if settings.SCHEDULED_UPDATE == 2 and strftime('%H:%M') == globals.addon.getSetting('scheduled_update_time'):
             xbmc.executebuiltin('RunPlugin(plugin://{0}/?mode=666&updateActor=2)'.format(globals.PLUGIN_ID))
             sleep(60)
         sleep(30)
