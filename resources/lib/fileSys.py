@@ -138,7 +138,7 @@ def writeMediaList(url, name, cType='Other', cleanName=True, albumartist=None):
                 for s, split2 in enumerate(splits2):
                     split2_plugin = re.sub('.*(plugin:\/\/[^<]*)', '\g<1>', split2)
                     split2_name_orig = re.sub('(?:name_orig=([^;]*);)(plugin:\/\/[^<]*)', '\g<1>', split2)
-                    if re.sub('%26OfferGroups%3DB0043YVHMY', '', split2_plugin) == re.sub('%26OfferGroups%3DB0043YVHMY', '', plugin) or split2_name_orig == name_orig:
+                    if re.sub('%26OfferGroups%3DB0043YVHMY', '', split2_plugin) == re.sub('%26OfferGroups%3DB0043YVHMY', '', plugin) or (split2_plugin == plugin and split2_name_orig == name_orig):
                         splits2[s] = url
                         replaced = True
                 if replaced == True:
