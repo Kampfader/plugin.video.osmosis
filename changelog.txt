@@ -1,3 +1,8 @@
+1.3.18
+  Maven    Option to hide update progress
+           Fixed the writing of the medialist entry if the plugin is different and the season is the same
+           Corrected wrong setting labels
+           Changed default db port in settings
 1.3.17
   Maven    Changed 'service.watchdog' to 'service.librarywatchdog' for kodi version >= 19
            Remove a single season if the medialist contains multiple seasons from the same provider
