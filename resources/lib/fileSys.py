@@ -48,7 +48,7 @@ def makeSTRM(filepath, filename, url):
                 xbmcvfs.mkdir(filepath)
 
     if not settings.STRM_LOC.startswith('smb:') and not settings.STRM_LOC.startswith('nfs:'):
-        fullpath = '{0}.strm'.format(py2_decode(os.path.normpath(xbmc.translatePath(os.path.join(filepath, filename)))))
+        fullpath = '{0}.strm'.format(py2_decode(os.path.normpath(xbmcvfs.translatePath(os.path.join(filepath, filename)))))
     else:
         fullpath = '{0}{1}.strm'.format(filepath, filename)
 #        if xbmcvfs.exists(fullpath):
@@ -282,7 +282,7 @@ def removeStreamsFromDatabaseAndFilesystem(delList):
             isAudio = True if type.lower().find('audio') > -1 else False
 
             if type.lower().find('movies') > -1:
-                path = xbmc.translatePath(os.path.join(settings.STRM_LOC, getMovieStrmPath(type, splits[1])))
+                path = xbmcvfs.translatePath(os.path.join(settings.STRM_LOC, getMovieStrmPath(type, splits[1])))
             else:
                 path = os.path.join(settings.STRM_LOC, type)
 
@@ -290,7 +290,7 @@ def removeStreamsFromDatabaseAndFilesystem(delList):
                     path = os.path.join(path, cleanByDictReplacements(splits[3]))
 
                 itemPath = getStrmname(splits[1])
-                path = xbmc.translatePath(os.path.join(path, cleanStrmFilesys(itemPath)))
+                path = xbmcvfs.translatePath(os.path.join(path, cleanStrmFilesys(itemPath)))
 
             path = completePath(py2_decode(path))
 
@@ -315,7 +315,7 @@ def removeStreamsFromDatabaseAndFilesystem(delList):
                             if fsearch and fsearch.group(0) in streams:
                                 filePath = os.path.join(py2_encode(path), file)
                                 addon_log_notice('removeStreamsFromDatabaseAndFilesystem: delete file = \'{0}\''.format(py2_decode(filePath)))
-                                xbmcvfs.delete(xbmc.translatePath(filePath))
+                                xbmcvfs.delete(xbmcvfs.translatePath(filePath))
                     dirs, files = xbmcvfs.listdir(path)
                     if not files and not dirs:
                         deleteFromFileSystem = True

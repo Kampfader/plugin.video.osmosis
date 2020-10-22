@@ -17,6 +17,7 @@ from time import mktime, strptime
 import xbmc
 import xbmcaddon
 import xbmcgui
+import xbmcvfs
 
 from .singleton import Singleton
 
@@ -45,9 +46,9 @@ class Globals(Singleton):
         self._globals['dialog'] = xbmcgui.Dialog()
         self._globals['dialogProgressBG'] = xbmcgui.DialogProgressBG()
 
-        self._globals['DATA_PATH'] = py2_decode(xbmc.translatePath(self.addon.getAddonInfo('profile')))
+        self._globals['DATA_PATH'] = py2_decode(xbmcvfs.translatePath(self.addon.getAddonInfo('profile')))
         self._globals['CONFIG_PATH'] = OSPJoin(self.DATA_PATH, 'config')
-        self._globals['HOME_PATH'] = py2_decode(xbmc.translatePath('special://home'))
+        self._globals['HOME_PATH'] = py2_decode(xbmcvfs.translatePath('special://home'))
         self._globals['PLUGIN_ID'] = py2_decode(self.addon.getAddonInfo('id'))
         self._globals['PLUGIN_PATH'] = py2_decode(self.addon.getAddonInfo('path'))
         self._globals['PLUGIN_NAME'] = self.addon.getAddonInfo('name')
@@ -133,14 +134,14 @@ class Settings(Singleton):
         elif 'DATABASE_MYSQL_OSMOSIS_TVSHOW_PORT' == name: return self._gs('TV-Show-DB port')
         elif 'DATABASE_MYSQL_OSMOSIS_TVSHOW_USERNAME' == name: return self._gs('TV-Show-DB username')
 
-        elif 'DATABASE_SQLLITE_KODI_MUSIC_FILENAME_AND_PATH' == name: return py2_decode(xbmc.translatePath(self._gs('KMusic-DB path')))
-        elif 'DATABASE_SQLLITE_KODI_VIDEO_FILENAME_AND_PATH' == name: return py2_decode(xbmc.translatePath(self._gs('KMovie-DB path')))
-        elif 'DATABASE_SQLLITE_OSMOSIS_MOVIE_PATH' == name: return py2_decode(xbmc.translatePath(self._gs('Movies-DB path')))
-        elif 'DATABASE_SQLLITE_OSMOSIS_MOVIE_FILENAME_AND_PATH' == name: return py2_decode(xbmc.translatePath(OSPJoin(self._gs('Movies-DB path'), 'Movies.db')))
-        elif 'DATABASE_SQLLITE_OSMOSIS_MUSIC_PATH' == name: return py2_decode(xbmc.translatePath(self._gs('Music-DB path')))
-        elif 'DATABASE_SQLLITE_OSMOSIS_MUSIC_FILENAME_AND_PATH' == name: return py2_decode(xbmc.translatePath(OSPJoin(self._gs('Music-DB path'), 'Musik.db')))
-        elif 'DATABASE_SQLLITE_OSMOSIS_TVSHOW_PATH' == name: return py2_decode(xbmc.translatePath(self._gs('TV-Show-DB path')))
-        elif 'DATABASE_SQLLITE_OSMOSIS_TVSHOW_FILENAME_AND_PATH' == name: return py2_decode(xbmc.translatePath(OSPJoin(self._gs('TV-Show-DB path'), 'Shows.db')))
+        elif 'DATABASE_SQLLITE_KODI_MUSIC_FILENAME_AND_PATH' == name: return py2_decode(xbmcvfs.translatePath(self._gs('KMusic-DB path')))
+        elif 'DATABASE_SQLLITE_KODI_VIDEO_FILENAME_AND_PATH' == name: return py2_decode(xbmcvfs.translatePath(self._gs('KMovie-DB path')))
+        elif 'DATABASE_SQLLITE_OSMOSIS_MOVIE_PATH' == name: return py2_decode(xbmcvfs.translatePath(self._gs('Movies-DB path')))
+        elif 'DATABASE_SQLLITE_OSMOSIS_MOVIE_FILENAME_AND_PATH' == name: return py2_decode(xbmcvfs.translatePath(OSPJoin(self._gs('Movies-DB path'), 'Movies.db')))
+        elif 'DATABASE_SQLLITE_OSMOSIS_MUSIC_PATH' == name: return py2_decode(xbmcvfs.translatePath(self._gs('Music-DB path')))
+        elif 'DATABASE_SQLLITE_OSMOSIS_MUSIC_FILENAME_AND_PATH' == name: return py2_decode(xbmcvfs.translatePath(OSPJoin(self._gs('Music-DB path'), 'Musik.db')))
+        elif 'DATABASE_SQLLITE_OSMOSIS_TVSHOW_PATH' == name: return py2_decode(xbmcvfs.translatePath(self._gs('TV-Show-DB path')))
+        elif 'DATABASE_SQLLITE_OSMOSIS_TVSHOW_FILENAME_AND_PATH' == name: return py2_decode(xbmcvfs.translatePath(OSPJoin(self._gs('TV-Show-DB path'), 'Shows.db')))
 
         elif 'FIND_SQLLITE_DB' == name: return self._gs('Find_SQLite_DB') == 'true'
         elif 'KEEP_MOVIE_YEAR' == name: return self._gs('keep_movie_year') == 'true'
@@ -149,7 +150,7 @@ class Settings(Singleton):
         elif 'HIDE_TITLE_IN_OV' == name: return self._gs('Hide_title_in_OV') == 'true'
         elif 'INFOLABELS_ADD_ADDON_STRING' == name: return self._gs('infolabels_add_addon_string')
         elif 'LINK_TYPE' == name: return int(self._gs('Link_Type'))
-        elif 'MEDIALIST_PATH' == name: return py2_decode(xbmc.translatePath(self._gs('MediaList_LOC')))
+        elif 'MEDIALIST_PATH' == name: return py2_decode(xbmcvfs.translatePath(self._gs('MediaList_LOC')))
         elif 'MEDIALIST_FILENNAME_AND_PATH' == name: return py2_decode(OSPJoin(self.MEDIALIST_PATH, 'MediaList.xml'))
         elif 'MYVIDEOS_SELECTACTION' == name: return jsonrpc('Settings.GetSettingValue', dict(setting='myvideos.selectaction')).get('value')
         elif 'NO_E0_STRMS_EXPORT' == name: return self._gs('noE0_Strms_Export') == 'true'
@@ -167,7 +168,7 @@ class Settings(Singleton):
         elif 'SHOW_UPDATE_PROGRESS_MANUALLY' == name: return self._gs('show_update_progress_manually') == 'true'
         elif 'SHOW_UPDATE_PROGRESS_SCHEDULED' == name: return self._gs('show_update_progress_scheduled') == 'true'
         elif 'SHOW_UPDATE_PROGRESS_STARTUP' == name: return self._gs('show_update_progress_startup') == 'true'
-        elif 'STRM_LOC' == name: return py2_decode(xbmc.translatePath(self._gs('STRM_LOC')))
+        elif 'STRM_LOC' == name: return py2_decode(xbmcvfs.translatePath(self._gs('STRM_LOC')))
         elif 'TVDB_DIALOG_AUTOCLOSE_TIME' == name: return int(self._gs('tvdb_dialog_autoclose_time'))
         elif 'TVDB_TOKEN_FILENNAME_AND_PATH' == name: return py2_decode(OSPJoin(self.MEDIALIST_PATH, 'tvdb_token.txt'))
         elif 'UPDATE_AT_STARTUP' == name: return self._gs('Update_at_startup') == 'true'
