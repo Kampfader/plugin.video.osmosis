@@ -79,9 +79,6 @@ def fillPluginItems(url, media_type='video', file_type=False, strm=False, strm_n
         elif re.search('Album', strm_type):
             addAlbum(details, strm_name, strm_type, pDialog)
 
-        if pDialog:
-            pDialog.close()
-
         return
 
     for detail in details:
@@ -397,7 +394,8 @@ def addAlbum(contentList, strm_name, strm_type, pDialog, PAGINGalbums='1'):
                 else:
                     link = file
 
-                pDialog.update(int(j), message='\'{0}\' {1}'.format(title, getString(39138, globals.addon)))
+                if pDialog:
+                    pDialog.update(int(j), message='\'{0}\' {1}'.format(title, getString(39138, globals.addon)))
                 path = os.path.join(strm_type, cleanStrmFilesys(artist), cleanStrmFilesys(strm_name))
                 if album and artist and title and path and link and track:
                     albumList.append({'path': path, 'title': title, 'link': link, 'album': album, 'artist': artist, 'track': track, 'duration': duration,
@@ -463,7 +461,8 @@ def addMovies(contentList, strm_name, strm_type, name_orig, pDialog, provider='n
 
                     provider = getProviderId(file)
 
-                    pDialog.update(int(j), message='\'{0}\' {1}'.format(label, getString(39138, globals.addon)))
+                    if pDialog:
+                        pDialog.update(int(j), message='\'{0}\' {1}'.format(label, getString(39138, globals.addon)))
                     if filetype and filetype == 'file' and get_title_with_OV:
                         m_path = getMovieStrmPath(strm_type, strm_name, label)
                         m_title = getStrmname(label)
@@ -502,7 +501,8 @@ def addMovies(contentList, strm_name, strm_type, name_orig, pDialog, provider='n
     j = 100 / len(movieList) if len(movieList) > 0 else 1
     # Write strms for all values in movieList
     for movie in movieList:
-        pDialog.update(int(j), message='\'{0}\' {1}'.format(movie.get('title'), getString(39138, globals.addon)))
+        if pDialog:
+            pDialog.update(int(j), message='\'{0}\' {1}'.format(movie.get('title'), getString(39138, globals.addon)))
         strm_link = 'plugin://{0}/?url=plugin&mode=10&mediaType=movie&id={1}|{2}'.format(globals.PLUGIN_ID, movie.get('movieID'), movie.get('title')) if settings.LINK_TYPE == 0 else movie.get('url')
         addon_log('write movie = {0}'.format(movie))
         writeSTRM(cleanStrms(movie.get('path')), cleanStrms(movie.get('title')), strm_link)
