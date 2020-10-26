@@ -312,7 +312,7 @@ def removeStreamsFromDatabaseAndFilesystem(delList):
                         dirs, files = xbmcvfs.listdir(path)
                         for file in files:
                             fsearch = re.search('[sS]\d+[eE]\d+', py2_decode(file))
-                            if fsearch and fsearch.group(0) in streams:
+                            if (fsearch and fsearch.group(0) in streams) or py2_decode(file).replace('.strm', '') in streams:
                                 filePath = os.path.join(py2_encode(path), file)
                                 addon_log_notice('removeStreamsFromDatabaseAndFilesystem: delete file = \'{0}\''.format(py2_decode(filePath)))
                                 xbmcvfs.delete(xbmc.translatePath(filePath))
