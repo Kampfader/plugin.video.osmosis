@@ -210,6 +210,8 @@ def addToMedialist(params):
                 pDialog = globals.dialogProgressBG
                 pDialog.create(heading='\'{0}\' {1}'.format(name, getString(39138, globals.addon)))
                 fillPluginItems(url, strm=True, strm_name=name, strm_type=cType, name_orig=name_orig, pDialog=pDialog)
+                if pDialog:
+                    pDialog.close()
                 # globals.dialog.notification(getString(39126, globals.addon), getString(39127, globals.addon), globals.MEDIA_ICON, 5000, True)
 
 
