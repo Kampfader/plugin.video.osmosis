@@ -1,3 +1,6 @@
+1.3.20
+  Maven    Closed progress dialog after adding new media
+           Fixed problem to delete STRMs
 1.3.19
   Maven    Fixed too early closing of the progress dialog when updating
 1.3.18
