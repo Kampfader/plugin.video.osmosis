@@ -32,9 +32,9 @@
 		<setting label="31306" type="select" id="scheduled_update_interval" subsetting="true" visible="eq(-1,1)" values="1|3|6|12|24|48|72" default="6" option="int"/>
 		<setting label="31305" type="time" id="scheduled_update_time" default="0:00" subsetting="true" visible="eq(-2,2)"/>
 		<setting label="31307" type="bool" id="show_update_progress" default="true"/>
-		<setting label="31308" type="bool" id="show_update_progress_manually" default="true" subsetting="true" visible="eq(-1,true)"/>
+		<setting label="31309" type="bool" id="show_update_progress_manually" default="true" subsetting="true" visible="eq(-1,true)"/>
 		<setting label="31301" type="bool" id="show_update_progress_startup" default="true" subsetting="true" visible="eq(-2,true)+eq(-6,true)"/>
-		<setting label="31302" type="bool" id="show_update_progress_scheduled" default="true" subsetting="true" visible="eq(-3,true)+gt(-6,0)"/>
+		<setting label="31308" type="bool" id="show_update_progress_scheduled" default="true" subsetting="true" visible="eq(-3,true)+gt(-6,0)"/>
 		
 		<setting label="31400" type="lsep"/>
 		<setting label="31401" type="enum" id="search_thetvdb" lvalues='31303|31402|31403' default="0"/>
