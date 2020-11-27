@@ -9,9 +9,8 @@ import xbmc
 import xbmcgui
 import xbmcplugin
 
-from .common import Globals, Settings, sleep
+from .common import Globals, Settings, sleep, jsonrpc
 from .guiTools import resumePointDialog, selectDialog
-from .jsonUtils import jsonrpc
 from .kodiDB import getKodiEpisodeID, getKodiMovieID, getVideo
 from .l10n import getString
 from .stringUtils import cleanStrmFilesys, getProvidername, parseMediaListURL
