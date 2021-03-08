@@ -15,6 +15,7 @@ from .guiTools import addDir, addLink, editDialog, getType, getTypeLangOnly, med
 from .jsonUtils import requestList
 from .kodiDB import musicDatabase, writeMovie, writeShow
 from .l10n import getString
+from .moduleUtil import getModule
 from .stringUtils import cleanByDictReplacements, cleanStrmFilesys, cleanLabels, cleanStrms, getMovieStrmPath, \
     getProviderId, getStrmname, parseMediaListURL
 from .tvdb import getEpisodeByName, getShowByName
@@ -201,7 +202,7 @@ def addToMedialist(params):
                 try:
                     plugin_id = re.search('{0}([^\/\?]*)'.format('plugin:\/\/'), url)
                     if plugin_id:
-                        module = moduleUtil.getModule(plugin_id.group(1))
+                        module = getModule(plugin_id.group(1))
                         if module and hasattr(module, 'create'):
                             url = module.create(name, url, 'video')
                 except:
@@ -395,13 +396,20 @@ def addAlbum(contentList, strm_name, strm_type, pDialog, PAGINGalbums='1'):
                     link = '{0}?{1}'.format(sys.argv[0], urllib.urlencode(linkparams))
                 else:
                     link = file
+                    
+                if art:                    
+                    plugin_id = re.search('{0}([^\/\?]*)'.format('plugin:\/\/'), file)
+                    if plugin_id:
+                        module = getModule(plugin_id.group(1))
+                        if module and hasattr(module, 'getArt'):
+                            art = module.getArt(art)
 
                 if pDialog:
                     pDialog.update(int(j), message='\'{0}\' {1}'.format(title, getString(39138, globals.addon)))
                 path = os.path.join(strm_type, cleanStrmFilesys(artist), cleanStrmFilesys(strm_name))
                 if album and artist and title and path and link and track:
                     albumList.append({'path': path, 'title': title, 'link': link, 'album': album, 'artist': artist, 'track': track, 'duration': duration,
-                                      'thumb': art.get('thumb'), 'genre': genre, 'year': year})
+                                      'art': art, 'genre': genre, 'year': year})
                 j = j + 100 / (len(contentList) * int(PAGINGalbums))
 
             pagesDone += 1
@@ -429,7 +437,7 @@ def addAlbum(contentList, strm_name, strm_type, pDialog, PAGINGalbums='1'):
     for album in albumList:
         strm_link = '{0}|{1}'.format(album.get('link'), album.get('title')) if settings.LINK_TYPE == 0 else album.get('link')
         fullpath, fileModTime = writeSTRM(album.get('path'), cleanStrms(album.get('title').rstrip('.')), strm_link)
-        musicDatabase(album.get('album'), album.get('artist'), album.get('title'), album.get('path'), album.get('link'), album.get('track'), album.get('duration'), album.get('thumb'), album.get('genre'), album.get('year'), fileModTime)
+        musicDatabase(album.get('album'), album.get('artist'), album.get('title'), album.get('path'), album.get('link'), album.get('track'), album.get('duration'), album.get('art'), album.get('genre'), album.get('year'), fileModTime)
 
     return albumList
 
