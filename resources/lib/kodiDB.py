@@ -164,7 +164,7 @@ def updateDatabase():
                 writeSchemaVersion(os.path.join(dir, subfile), datetime.now(), 1, dbtype)
 
 
-def musicDatabase(strAlbumName, strArtistName, strSongTitle, strPath, strURL, iTrack, iDuration, strArtPath, listGenre, iYear, tFileModTime=None):
+def musicDatabase(strAlbumName, strArtistName, strSongTitle, strPath, strURL, iTrack, iDuration, art, listGenre, iYear, tFileModTime=None):
     strPath = completePath(os.path.join(settings.STRM_LOC, strPath))
 
     # Write to music db and get id's
@@ -179,9 +179,11 @@ def musicDatabase(strAlbumName, strArtistName, strSongTitle, strPath, strURL, iT
             iGenreID = writeGenre(strGenre)
             writeSongGenre(iGenreID, iSongID)
     writeAlbumArtist(iArtistID, iAlbumID, strArtistName)
-    if strArtPath and strArtPath != '':
-        writeThump(iArtistID, 'artist', 'thumb', strArtPath)
-        writeThump(iAlbumID, 'album', 'thumb', strArtPath)
+    if art:
+        if art.get('artist'):
+            writeThump(iArtistID, 'artist', 'thumb', art.get('artist'))
+        if art.get('album'):
+            writeThump(iAlbumID, 'album', 'thumb', art.get('album'))
 
     writeIntoSongTable(strSongTitle, iSongID, strArtistName, strAlbumName, iAlbumID, strPath, iPathID, strURL, iRoleID, iArtistID, iSongArtistID, 'F')
 
