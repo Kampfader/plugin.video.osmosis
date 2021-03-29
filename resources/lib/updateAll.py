@@ -40,9 +40,9 @@ def strm_update(selectedItems=None, actor=0):
     if len(items) > 0:
         settings = Settings()
         if settings.SHOW_UPDATE_PROGRESS and \
-                ((actor == 0 and settings.SHOW_UPDATE_PROGRESS_MANUALLY) or \
-                ((actor == 1 or actor == 2) and settings.SHOW_UPDATE_PROGRESS_SCHEDULED) or \
-                (actor == 3 and settings.SHOW_UPDATE_PROGRESS_STARTUP)):
+                ((actor == actor_update_manual and settings.SHOW_UPDATE_PROGRESS_MANUALLY) or \
+                ((actor == actor_update_periodictime or actor == actor_update_fixtime) and settings.SHOW_UPDATE_PROGRESS_SCHEDULED) or \
+                (actor == actor_update_kodistart and settings.SHOW_UPDATE_PROGRESS_STARTUP)):
             pDialog = globals.dialogProgressBG
             pDialog.create(getString(39140, globals.addon))
         else:
@@ -85,7 +85,7 @@ def strm_update(selectedItems=None, actor=0):
         if pDialog:
             pDialog.close()
 
-        if actor == actor_update_periodictime:
+        if settings.SHOW_UPDATE_PROGRESS and actor == actor_update_periodictime and settings.SHOW_UPDATE_PROGRESS_SCHEDULED:
             globals.dialog.notification(getString(39123, globals.addon), '{0} {1}h'.format(getString(39136, globals.addon), settings.SCHEDULED_UPDATE_INTERVAL), globals.MEDIA_ICON, 5000, True)
-        elif actor == actor_update_fixtime:
+        elif settings.SHOW_UPDATE_PROGRESS and actor == actor_update_fixtime and settings.SHOW_UPDATE_PROGRESS_SCHEDULED:
             globals.dialog.notification(getString(39123, globals.addon), '{0} {1}h'.format(getString(39137, globals.addon), settings.SCHEDULED_UPDATE_TIME), globals.MEDIA_ICON, 5000, True)
