@@ -39,7 +39,7 @@ def addFunction(labels):
     u = 'plugin://{0}/?{1}'.format(globals.PLUGIN_ID, urllib.urlencode({'mode': 666, 'fanart': globals.MEDIA_UPDATE}))
     liz = xbmcgui.ListItem(labels)
     liz.setInfo(type='Video', infoLabels={'Title': labels})
-    liz.setArt({'icon': globals.MEDIA_UPDATE, 'thumb': globals.MEDIA_UPDATE, 'fanart':  globals.MEDIA_FANART})
+    liz.setArt({'icon': globals.MEDIA_UPDATE, 'thumb': globals.MEDIA_UPDATE, 'fanart': globals.MEDIA_FANART})
 
     xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=u, listitem=liz, isFolder=False)
 
@@ -101,12 +101,8 @@ def getSources():
     addItem(getString(39007, globals.addon), 5, globals.MEDIA_REMOVE)
     addItem(getString(39008, globals.addon), 51, globals.MEDIA_REMOVE)
     addItem(getString(39009, globals.addon), 52, globals.MEDIA_REMOVE)
-    if globals.KODI_VERSION >= 19:
-        watchdog_id = 'service.librarywatchdog'
-    else:
-        watchdog_id = 'service.watchdog'
-    if xbmc.getCondVisibility('System.HasAddon({0})'.format(watchdog_id)) != 1:
-        addon_details = jsonrpc('Addons.GetAddonDetails', dict(addonid=watchdog_id, properties=['enabled', 'installed'])).get('addon')
+    if xbmc.getCondVisibility('System.HasAddon({0})'.format(globals.WATCHDOG_ID)) != 1:
+        addon_details = jsonrpc('Addons.GetAddonDetails', dict(addonid=globals.WATCHDOG_ID, properties=['enabled', 'installed'])).get('addon')
         if addon_details and addon_details.get('installed'):
             addItem(getString(39010, globals.addon), 7, globals.MEDIA_ICON)
         else:

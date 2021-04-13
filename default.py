@@ -97,10 +97,10 @@ if __name__ == '__main__':
     elif mode == 52:
         removeShowsFromTVDBCache()
     elif mode == 6:
-        xbmc.executebuiltin('InstallAddon(service.watchdog)')
+        xbmc.executebuiltin('InstallAddon({0})'.format(globals.WATCHDOG_ID))
         xbmc.executebuiltin('Container.Refresh')
     elif mode == 7:
-        jsonrpc('Addons.SetAddonEnabled', dict(addonid='service.watchdog', enabled=True))
+        jsonrpc('Addons.SetAddonEnabled', dict(addonid=globals.WATCHDOG_ID, enabled=True))
         xbmc.executebuiltin('Container.Refresh')
     elif mode == 10:
         play(sys.argv, params)
