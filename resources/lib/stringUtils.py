@@ -42,7 +42,7 @@ def cleanLabels(text, formater='', keep_year=False):
                    ('(English Subtitled)', ''), ('*', ''),
                    ('\n', ''), ('\r', ''),
                    ('\t', ''), ('\ ', ''),
-                   ('/ ', ''), ('\\', '/'),
+                   ('/ ', '- '), ('\\', '/'), #change the / to - for movies 
                    ('//', '/'), ('plugin.video.', ''),
                    ('plugin.audio.', ''))
 
@@ -50,7 +50,7 @@ def cleanLabels(text, formater='', keep_year=False):
     text = multiple_replace(text, *replacements)
     text = cleanStrmFilesys(text)
     if not keep_year:
-        text = re.sub('\(.\d*\)', '', text)
+        text = re.sub(r'^.*?-', '', text) #clear all before first - character
     if formater == 'title':
         text = text.title().replace('\'S', '\'s')
     elif formater == 'upper':
@@ -75,9 +75,9 @@ def cleanStrms(text, formater=''):
         text = text
     return text
 
-
+#change the folder for series
 def cleanStrmFilesys(string):
-    return re.sub('[\/:*?<>|!"]', '', string)
+    return re.sub('[\/:*?<>|!"]|^.*?/ ', '', string)
 
 
 def multiRstrip(text):
